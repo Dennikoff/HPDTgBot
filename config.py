@@ -5,3 +5,4 @@ load_dotenv()
 
 token = os.getenv("TOKEN")
 channel_id = os.getenv("CHANNEL_ID")
+channel_url = os.getenv("CHANNEL_URL")
