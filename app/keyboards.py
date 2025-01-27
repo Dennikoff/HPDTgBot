@@ -29,3 +29,14 @@ def get_post_keyboard(post_url):
 	return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Смотреть пост", url=post_url)]
     ])
+
+def create_posts_menu():
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="1", callback_data="post_1"),
+            InlineKeyboardButton(text="2", callback_data="post_2"),
+            InlineKeyboardButton(text="3", callback_data="post_3"),
+            InlineKeyboardButton(text="4", callback_data="post_4")
+        ]
+    ])
+    return markup
