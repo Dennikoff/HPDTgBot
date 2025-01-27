@@ -5,7 +5,7 @@ from aiogram.types import (
     InlineKeyboardMarkup,
 )
 
-from const import KeyboardConts, MessageHandlerConsts
+from app.const import KeyboardConts, MessageHandlerConsts
 
 main_keyboard = ReplyKeyboardMarkup(
     keyboard=[

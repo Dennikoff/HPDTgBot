@@ -5,7 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 from app.middleware import check_subscription_middleware
-from const import MessageHandlerConsts
+from app.const import MessageHandlerConsts
 import app.keyboards as kb
 
 router = Router()
