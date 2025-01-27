@@ -24,3 +24,8 @@ main_return_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True,
     input_field_placeholder=KeyboardConts.CHOOSE_MENU,
 )
+
+def get_post_keyboard(post_url):
+	return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Смотреть пост", url=post_url)]
+    ])

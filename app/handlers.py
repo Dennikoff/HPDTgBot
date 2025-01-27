@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import CommandStart
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
@@ -32,17 +32,18 @@ async def about_us(message: Message):
 
 @router.message(F.text.lower() == MessageHandlerConsts.INFO.lower())
 @check_subscription_middleware
-async def about_us(message: Message):
-    await message.answer(MessageHandlerConsts.INFO, reply_markup=kb.main_return_keyboard)
+async def information(message: Message):
+    keyboard = kb.get_post_keyboard('https://telegra.ph/Test-01-27-311')
+    await message.answer(MessageHandlerConsts.INFO, reply_markup=keyboard)
 
 @router.message(F.text.lower() == MessageHandlerConsts.CONSULTATION.lower())
 @check_subscription_middleware
-async def about_us(message: Message):
+async def consultation(message: Message):
     await message.answer(MessageHandlerConsts.CONSULTATION, reply_markup=kb.main_return_keyboard)
 
 @router.message(F.text.lower() == MessageHandlerConsts.MAIN_RETURN.lower())
 @check_subscription_middleware
-async def handle_all_messages(message: Message):
+async def handle_return_message(message: Message):
     await message.bot.send_message(message.chat.id, f"Выберите один из пунктов.", reply_markup=kb.main_keyboard)
 
 @router.message()
