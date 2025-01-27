@@ -1,4 +1,4 @@
-.env
+.env.local
 *.pyc
 .vscode
 venv
