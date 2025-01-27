@@ -1,27 +1,16 @@
-from aiogram import Bot, Router
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.filters import CommandStart, Command
+from aiogram import Router, F
+from aiogram.types import Message
+from aiogram.filters import CommandStart
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-from config import channel_id, channel_url
-from functools import wraps
 
+from app.middleware import check_subscription_middleware
+from const import MessageHandlerConsts
 import app.keyboards as kb
 
 router = Router()
 
-def check_subscription_middleware(func):
-    @wraps(func)
-    async def wrapper(message: Message, *args, **kwargs):
-        chat_member = await message.bot.get_chat_member(channel_id, message.from_user.id)
-        if chat_member.status in ['member', 'administrator', 'creator']:
-            return await func(message, *args, **kwargs)
-        else:
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="Перейти на канал", url=channel_url)]
-            ])
-            return await message.answer("Чтобы использовать этого бота, подпишись на канал:", reply_markup=keyboard)
-    return wrapper
+
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
@@ -31,11 +20,32 @@ async def cmd_start(message: Message):
 
 На связи Харке Виктория Валентивна, КМН, Доцент.
 Данный бот отвечает на самые частые вопросы, задаваемые на ортодонтическом приёме, и также содержит полезную информацию для пациентов.
-''', reply_markup=kb.main)
+''', reply_markup=kb.main_keyboard)
 
+
+
+    
+@router.message(F.text.lower() == MessageHandlerConsts.ABOUT_US.lower())
+@check_subscription_middleware
+async def about_us(message: Message):
+    await message.answer(MessageHandlerConsts.ABOUT_US, reply_markup=kb.main_return_keyboard)
+
+@router.message(F.text.lower() == MessageHandlerConsts.INFO.lower())
+@check_subscription_middleware
+async def about_us(message: Message):
+    await message.answer(MessageHandlerConsts.INFO, reply_markup=kb.main_return_keyboard)
+
+@router.message(F.text.lower() == MessageHandlerConsts.CONSULTATION.lower())
+@check_subscription_middleware
+async def about_us(message: Message):
+    await message.answer(MessageHandlerConsts.CONSULTATION, reply_markup=kb.main_return_keyboard)
+
+@router.message(F.text.lower() == MessageHandlerConsts.MAIN_RETURN.lower())
+@check_subscription_middleware
+async def handle_all_messages(message: Message):
+    await message.bot.send_message(message.chat.id, f"Выберите один из пунктов.", reply_markup=kb.main_keyboard)
 
 @router.message()
 @check_subscription_middleware
 async def handle_all_messages(message: Message):
-    await message.bot.send_message(message.chat.id, f"Я вас не понимаю. Выберите один из пунктов.", reply_markup=kb.main)
-    
+    await message.bot.send_message(message.chat.id, f"Я вас не понимаю. Выберите один из пунктов.", reply_markup=kb.main_keyboard)
